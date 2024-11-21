@@ -1,4 +1,5 @@
 import streamlit as st 
+from flask import Flask, request, jsonify
 import torch 
 from torchvision import models, transforms 
 from PIL import Image 
@@ -12,6 +13,9 @@ st.set_page_config(
     page_icon="🦋", 
     layout="wide"
 )
+
+
+app = Flask(__name__)
 
 # Define the model checkpoint URL (Replace with your direct download link)
 # CHECKPOINT_URL = "https://drive.google.com/file/d/1TbVPD2jNiFNe6hclk0Uxnk4FVGyTQhk7/view"
@@ -61,6 +65,19 @@ def classify_image(image):
         pred_class = str(pred_class.item())  # Convert to string to match JSON keys 
         return class_names.get(pred_class, "Unknown class")  # Retrieve class name, with fallback 
 
+@app.route('/predict', methods=['POST'])
+def predict():
+    """API endpoint for predicting the class of an uploaded image."""
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image uploaded'}), 400
+
+    image = request.files['image']
+    image = Image.open(image).convert('RGB')
+    
+    label = classify_image(image)
+    
+    return jsonify({'class': label})
+
 # Main Streamlit App
 def main():
     st.title("🦋 Butterfly Species Detector")
@@ -87,4 +104,5 @@ def main():
 
 # Run the app
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
+

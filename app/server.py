@@ -14,8 +14,8 @@ st.set_page_config(
 )
 
 # Define the model checkpoint URL (Replace with your direct download link)
-CHECKPOINT_URL = "https://your-google-drive-direct-download-link"
-
+# CHECKPOINT_URL = "https://drive.google.com/file/d/1TbVPD2jNiFNe6hclk0Uxnk4FVGyTQhk7/view"
+CHECKPOINT_URL = https://drive.usercontent.google.com/download?id=1MaI532ClLzwIwRIBy0inU9dmP0P-A9zm&export=download
 # Path to save the downloaded checkpoint
 CHECKPOINT_PATH = "vgg_finetuned_custom_data.pth"
 

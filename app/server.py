@@ -67,13 +67,14 @@ def classify_image(image):
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    print("in")
     """API endpoint for predicting the class of an uploaded image."""
     if 'image' not in request.files:
         return jsonify({'error': 'No image uploaded'}), 400
 
     image = request.files['image']
     image = Image.open(image).convert('RGB')
-    
+    print("out")
     label = classify_image(image)
     
     return jsonify({'class': label})

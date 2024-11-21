@@ -1,0 +1,10 @@
+streamlit
+torch
+torchvision
+Pillow
+requests
+aiohttp
+fastai
+uvicorn
+flask
+starlette

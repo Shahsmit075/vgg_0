@@ -14,14 +14,25 @@ CHECKPOINT_URL = "https://drive.usercontent.google.com/download?id=1MaI532ClLzwI
 CHECKPOINT_PATH = "vgg_finetuned_custom_data.pth"
 
 # Download model checkpoint if not already present
+# if not os.path.exists(CHECKPOINT_PATH):
+#     response = requests.get(CHECKPOINT_URL)
+#     with open(CHECKPOINT_PATH, 'wb') as f:
+#         f.write(response.content)
+
 if not os.path.exists(CHECKPOINT_PATH):
-    response = requests.get(CHECKPOINT_URL)
-    with open(CHECKPOINT_PATH, 'wb') as f:
-        f.write(response.content)
+    try:
+        response = requests.get(CHECKPOINT_URL)
+        with open(CHECKPOINT_PATH, 'wb') as f:
+            f.write(response.content)
+        print(f"Model downloaded successfully: {CHECKPOINT_PATH}")
+    except Exception as e:
+        print(f"Model download failed: {e}")
 
 # Load class names (Modify based on your actual file)
 with open('classes.json', 'r') as f:
     class_names = json.load(f)
+
+
 
 # Define the image transformation
 transform = transforms.Compose([
@@ -72,4 +83,5 @@ def predict():
         return jsonify({'error': f"Failed to process image: {str(e)}"}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
